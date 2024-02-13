@@ -26,6 +26,13 @@ public class Instructor {
         // TODO document why this constructor is empty
     }
 
+    public Instructor(String name, String surname, List<Student> students, boolean active) {
+        this.name = name;
+        this.surname = surname;
+        this.students = students;
+        this.active = active;
+    }
+
     public Long getId() {
         return id;
     }

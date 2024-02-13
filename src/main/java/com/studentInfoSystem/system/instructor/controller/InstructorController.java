@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/instructor")
 public class InstructorController {
 
     private static final Logger logger = LoggerFactory.getLogger(InstructorController.class);
@@ -29,7 +29,7 @@ public class InstructorController {
         this.instructorService = instructorService;
     }
 
-    @GetMapping("instructors")
+    @GetMapping()
     public ResponseEntity<List<InstructorWithoutStudentDetailsDto>> getAllInstructors() {
         logger.info("getAllInstructors is started");
         List<InstructorWithoutStudentDetailsDto> instructors = instructorService.getAllInstructors();

@@ -1,6 +1,7 @@
 package com.studentInfoSystem.system.student.controller;
 
 
+import com.studentInfoSystem.system.grade.dto.AddGradeRequestDto;
 import com.studentInfoSystem.system.grade.dto.UpdateGradeRequestDto;
 import com.studentInfoSystem.system.student.dto.AddStudentRequestDto;
 import com.studentInfoSystem.system.student.dto.StudentDto;
@@ -26,13 +27,13 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping("/students")
-    public ResponseEntity<Page<StudentDto>> getAllBooks(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size){
+    @GetMapping("/student")
+    public ResponseEntity<Page<StudentDto>> getAllStudents(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size){
         logger.info("getAllBooks is started");
         Page<StudentDto> studentDtoPage = studentService.getAllStudents(page, size);
         return ResponseEntity.ok(studentDtoPage);
     }
-    @DeleteMapping("/students/{studentId}/grades/{gradeId}")
+    @DeleteMapping("/student/{studentId}/grades/{gradeId}")
     public ResponseEntity<String> deleteGradeFromAStudent(@PathVariable Long studentId, @PathVariable Long gradeId) {
         try {
             logger.info("deleteGradeFromAStudent is started");
@@ -43,11 +44,11 @@ public class StudentController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-    @PutMapping("/students/{studentId}/grades")
-    public ResponseEntity<String> updateGradeFromAStudent(@PathVariable Long studentId, @RequestBody UpdateGradeRequestDto updateGradeRequestDto) {
+    @PutMapping("/student/{studentId}/grades/{gradeId}")
+    public ResponseEntity<String> updateGradeFromAStudent(@PathVariable Long studentId,@PathVariable Long gradeId, @RequestBody UpdateGradeRequestDto updateGradeRequestDto) {
         try {
             logger.info("updateGradeFromAStudent is started");
-            studentService.updateGradeFromAStudent(studentId, updateGradeRequestDto);
+            studentService.updateGradeFromAStudent(studentId,gradeId,updateGradeRequestDto);
             return new ResponseEntity<>("Grade updated successfully", HttpStatus.OK);
         } catch (RuntimeException e) {
             logger.error("updateGradeFromAStudent is failed");
@@ -59,6 +60,16 @@ public class StudentController {
         try {
             studentService.createStudent(addStudentRequestDto);
             return new ResponseEntity<>("Student created successfully", HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("/student/{studentId}")
+    public ResponseEntity<String> addAGradeToAStudent(@PathVariable Long studentId,@RequestBody AddGradeRequestDto addGradeRequestDto) {
+        try {
+            logger.info("addAGradeToAStudent is started");
+            studentService.addAGradeToAStudent(studentId,addGradeRequestDto);
+            return new ResponseEntity<>("Grade added successfully", HttpStatus.CREATED);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
