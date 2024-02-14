@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/")
@@ -28,10 +30,10 @@ public class StudentController {
     }
 
     @GetMapping("/student")
-    public ResponseEntity<Page<StudentDto>> getAllStudents(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size){
+    public ResponseEntity<List<StudentDto>> getAllStudents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
         logger.info("getAllBooks is started");
         Page<StudentDto> studentDtoPage = studentService.getAllStudents(page, size);
-        return ResponseEntity.ok(studentDtoPage);
+        return ResponseEntity.ok(studentDtoPage.getContent());
     }
     @DeleteMapping("/student/{studentId}/grades/{gradeId}")
     public ResponseEntity<String> deleteGradeFromAStudent(@PathVariable Long studentId, @PathVariable Long gradeId) {
