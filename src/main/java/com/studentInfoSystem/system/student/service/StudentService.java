@@ -72,8 +72,8 @@ public class StudentService {
         grade.setValue(updateGradeRequestDto.value());
         studentRepository.save(student);
     }
-    public void addAGradeToAStudent(Long studentId, AddGradeRequestDto addGradeRequestDto) {
-        Student student = findStudentById(studentId);
+    public void addAGradeToAStudent(String studentId, AddGradeRequestDto addGradeRequestDto) {
+        Student student = findStudentById(Long.parseLong(studentId));
         Grade grade = AddGradeRequestDto.convertFromDto(addGradeRequestDto);
         grade.setStudent(student);
         student.getGrades().add(grade);

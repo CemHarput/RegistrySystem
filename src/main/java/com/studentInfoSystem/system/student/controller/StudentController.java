@@ -72,7 +72,7 @@ public class StudentController {
         }
     }
     @PostMapping("/student/{studentId}")
-    public ResponseEntity<String> addAGradeToAStudent(@PathVariable Long studentId,@RequestBody AddGradeRequestDto addGradeRequestDto) {
+    public ResponseEntity<String> addAGradeToAStudent(@PathVariable String studentId,@RequestBody AddGradeRequestDto addGradeRequestDto) {
         try {
             logger.info("addAGradeToAStudent is started");
             studentService.addAGradeToAStudent(studentId,addGradeRequestDto);
