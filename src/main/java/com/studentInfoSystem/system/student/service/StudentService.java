@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,17 +51,19 @@ public class StudentService {
         student.setGrades(gradeList);
         studentRepository.save(student);
     }
-    public void deleteGradeFromAStudent(Long studentId, Long gradeIdToBeDeleted) {
-        Student student = findStudentById(studentId);
-
+    public void deleteGradeFromAStudent(String studentId, String gradeIdToBeDeleted) {
+        Student student = findStudentById(Long.parseLong(studentId));
         List<Grade> grades = student.getGrades();
-        Grade grade= findGradeById(student,gradeIdToBeDeleted);
-        grades.removeIf(g -> g.getId().equals(gradeIdToBeDeleted));
-        student.setGrades(grades);
 
-        if (Objects.nonNull(grade)) {
+        Optional<Grade> gradeOptional = grades.stream()
+                .filter(grade -> grade.getId().equals(Long.parseLong(gradeIdToBeDeleted)))
+                .findFirst();
+
+        gradeOptional.ifPresent(grade -> {
+            grades.remove(grade);
+            student.setGrades(grades);
             gradeRepository.delete(grade);
-        }
+        });
     }
     public void updateGradeFromAStudent(Long studentId,Long gradeId,UpdateGradeRequestDto updateGradeRequestDto) {
         Student student = findStudentById(studentId);

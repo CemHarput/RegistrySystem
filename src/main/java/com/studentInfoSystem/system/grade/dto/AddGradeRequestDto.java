@@ -11,8 +11,4 @@ public record AddGradeRequestDto(BigDecimal value) {
         grade.setValue(addGradeRequestDto.value());
         return grade;
     }
-    public static AddGradeRequestDto convertFromGrade(Grade grade) {
-        return new AddGradeRequestDto(grade.getValue());
-    }
-
 }

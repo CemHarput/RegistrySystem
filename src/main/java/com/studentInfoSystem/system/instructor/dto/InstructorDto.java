@@ -18,7 +18,7 @@ public record InstructorDto( String name, String surname, List<StudentDto> stude
     }
 
     private static StudentDto convertToDto(Student student) {
-        return new StudentDto(student.getId(), student.getName(), student.getSurname(), null);
+        return new StudentDto(student.getId(), student.getName(), student.getSurname(),null ,null);
     }
 
 }

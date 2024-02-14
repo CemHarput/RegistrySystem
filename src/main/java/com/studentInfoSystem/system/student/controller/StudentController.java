@@ -36,10 +36,11 @@ public class StudentController {
         return ResponseEntity.ok(studentDtoPage.getContent());
     }
     @DeleteMapping("/student/{studentId}/grades/{gradeId}")
-    public ResponseEntity<String> deleteGradeFromAStudent(@PathVariable Long studentId, @PathVariable Long gradeId) {
+    public ResponseEntity<String> deleteGradeFromAStudent(@PathVariable String studentId, @PathVariable String gradeId) {
         try {
             logger.info("deleteGradeFromAStudent is started");
             studentService.deleteGradeFromAStudent(studentId, gradeId);
+            logger.info("Grade deleted successfully");
             return new ResponseEntity<>("Grade deleted successfully", HttpStatus.OK);
         } catch (RuntimeException e) {
             logger.error("deleteGradeFromAStudent is failed");
@@ -51,6 +52,7 @@ public class StudentController {
         try {
             logger.info("updateGradeFromAStudent is started");
             studentService.updateGradeFromAStudent(studentId,gradeId,updateGradeRequestDto);
+            logger.info("Grade updated successfully");
             return new ResponseEntity<>("Grade updated successfully", HttpStatus.OK);
         } catch (RuntimeException e) {
             logger.error("updateGradeFromAStudent is failed");
@@ -60,9 +62,12 @@ public class StudentController {
     @PostMapping("/addStudent")
     public ResponseEntity<String> createStudent(@RequestBody AddStudentRequestDto addStudentRequestDto) {
         try {
+            logger.info("createStudent is started");
             studentService.createStudent(addStudentRequestDto);
+            logger.info("Student created successfully");
             return new ResponseEntity<>("Student created successfully", HttpStatus.CREATED);
         } catch (RuntimeException e) {
+            logger.error("createStudent is failed ");
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -71,8 +76,10 @@ public class StudentController {
         try {
             logger.info("addAGradeToAStudent is started");
             studentService.addAGradeToAStudent(studentId,addGradeRequestDto);
+            logger.info("Grade added successfully");
             return new ResponseEntity<>("Grade added successfully", HttpStatus.CREATED);
         } catch (RuntimeException e) {
+            logger.error("addAGradeToAStudent is failed ");
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

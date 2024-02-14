@@ -1,19 +1,16 @@
 package com.studentInfoSystem.system.student.dto;
 
 import com.studentInfoSystem.system.grade.dto.AddGradeRequestDto;
-import com.studentInfoSystem.system.grade.model.Grade;
+import com.studentInfoSystem.system.grade.dto.UpdateGradeRequestDto;
 import com.studentInfoSystem.system.student.model.Student;
-
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public record StudentDto(Long id, String name, String surname, List<AddGradeRequestDto> grades) {
+public record StudentDto(Long id, String name, String surname, List<UpdateGradeRequestDto> grades,String instructorName) {
 
     public static StudentDto convertFromStudent(Student student){
-        List<AddGradeRequestDto> gradeDtoList = student.getGrades().stream()
-                .map(AddGradeRequestDto::convertFromGrade)
+        List<UpdateGradeRequestDto> gradeDtoList = student.getGrades().stream()
+                .map(UpdateGradeRequestDto::convertFromGrade)
                 .toList();
-        return new StudentDto(student.getId(), student.getName(), student.getSurname(), gradeDtoList);
+        return new StudentDto(student.getId(), student.getName(), student.getSurname(), gradeDtoList,student.getInstructor().getName());
     }
 }
