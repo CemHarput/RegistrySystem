@@ -1,6 +1,7 @@
 package com.studentInfoSystem.system.student.service;
 
 
+import com.studentInfoSystem.system.exception.EntityNotFoundException;
 import com.studentInfoSystem.system.grade.dto.AddGradeRequestDto;
 import com.studentInfoSystem.system.grade.dto.UpdateGradeRequestDto;
 import com.studentInfoSystem.system.grade.model.Grade;
@@ -40,7 +41,7 @@ public class StudentService {
         student.setName(addStudentRequestDto.name());
         student.setSurname(addStudentRequestDto.surname());
         Instructor instructor = instructorRepository.findById(Long.valueOf(addStudentRequestDto.instructorId()))
-                .orElseThrow(() -> new RuntimeException("Instructor not found with ID: " + addStudentRequestDto.instructorId()));
+                .orElseThrow(() -> new EntityNotFoundException("Instructor not found with ID: " + addStudentRequestDto.instructorId()));
         student.setInstructor(instructor);
         List<Grade> gradeList = new ArrayList<>();
         for (AddGradeRequestDto addGradeRequestDto : addStudentRequestDto.addGradeRequestDtoList()) {
@@ -81,14 +82,14 @@ public class StudentService {
     }
     private Student findStudentById(Long studentId) {
         return studentRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found with ID: " + studentId));
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with ID: " + studentId));
     }
 
     private Grade findGradeById(Student student, Long gradeId) {
         return student.getGrades().stream()
                 .filter(grade -> grade.getId().equals(gradeId))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Grade not found with ID: " + gradeId));
+                .orElseThrow(() -> new EntityNotFoundException("Grade not found with ID: " + gradeId));
     }
     public Page<StudentDto> getAllStudents(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);

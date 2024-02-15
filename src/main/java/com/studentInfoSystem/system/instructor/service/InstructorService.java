@@ -1,6 +1,7 @@
 package com.studentInfoSystem.system.instructor.service;
 
 
+import com.studentInfoSystem.system.exception.EntityNotFoundException;
 import com.studentInfoSystem.system.instructor.dto.InstructorDto;
 import com.studentInfoSystem.system.instructor.dto.InstructorWithoutStudentDetailsDto;
 import com.studentInfoSystem.system.instructor.model.Instructor;
@@ -25,7 +26,7 @@ public class InstructorService {
     }
     public List<InstructorDto> getAnInstructorsWithDetails(Long instructorId){
         Instructor instructor = instructorRepository.findById(instructorId)
-                .orElseThrow(() -> new RuntimeException("Instructor not found with ID: " + instructorId));
+                .orElseThrow(() -> new EntityNotFoundException("Instructor not found with ID: " + instructorId));
 
         return Collections.singletonList(InstructorDto.convertFromInstructor(instructor));
     }
